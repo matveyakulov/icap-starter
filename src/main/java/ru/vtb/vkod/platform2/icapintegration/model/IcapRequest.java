@@ -1,11 +1,11 @@
-package io.github.icap.spring.boot.model;
+package ru.vtb.vkod.platform2.icapintegration.model;
 
 import lombok.Getter;
 
 import java.nio.charset.StandardCharsets;
 
 /**
- * An immutable ICAP request to be sent by an {@link io.github.icap.spring.boot.client.IcapClient}.
+ * An immutable ICAP request to be sent by an {@link ru.vtb.vkod.platform2.icapintegration.client.IcapClient}.
  *
  * <p>An ICAP message ({@code REQMOD}/{@code RESPMOD}) <em>encapsulates</em> an HTTP message. This
  * class models the three encapsulated parts plus the ICAP method/service:</p>

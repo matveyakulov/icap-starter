@@ -1,12 +1,12 @@
-package io.github.icap.spring.boot.client;
+package ru.vtb.vkod.platform2.icapintegration.client;
 
-import io.github.icap.spring.boot.exception.IcapConnectionException;
-import io.github.icap.spring.boot.exception.IcapProtocolException;
-import io.github.icap.spring.boot.model.IcapHeaders;
-import io.github.icap.spring.boot.model.IcapMethod;
-import io.github.icap.spring.boot.model.IcapRequest;
-import io.github.icap.spring.boot.model.IcapResponse;
-import io.github.icap.spring.boot.model.IcapStatus;
+import ru.vtb.vkod.platform2.icapintegration.exception.IcapConnectionException;
+import ru.vtb.vkod.platform2.icapintegration.exception.IcapProtocolException;
+import ru.vtb.vkod.platform2.icapintegration.model.IcapHeaders;
+import ru.vtb.vkod.platform2.icapintegration.model.IcapMethod;
+import ru.vtb.vkod.platform2.icapintegration.model.IcapRequest;
+import ru.vtb.vkod.platform2.icapintegration.model.IcapResponse;
+import ru.vtb.vkod.platform2.icapintegration.model.IcapStatus;
 
 import javax.net.ssl.SSLSocketFactory;
 import java.io.BufferedInputStream;

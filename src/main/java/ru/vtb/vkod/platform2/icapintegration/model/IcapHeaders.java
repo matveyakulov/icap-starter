@@ -1,4 +1,4 @@
-package io.github.icap.spring.boot.model;
+package ru.vtb.vkod.platform2.icapintegration.model;
 
 import java.util.ArrayList;
 import java.util.Collections;

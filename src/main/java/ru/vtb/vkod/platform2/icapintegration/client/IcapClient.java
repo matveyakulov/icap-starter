@@ -1,10 +1,10 @@
-package io.github.icap.spring.boot.client;
+package ru.vtb.vkod.platform2.icapintegration.client;
 
-import io.github.icap.spring.boot.exception.IcapConnectionException;
-import io.github.icap.spring.boot.exception.IcapException;
-import io.github.icap.spring.boot.exception.IcapProtocolException;
-import io.github.icap.spring.boot.model.IcapRequest;
-import io.github.icap.spring.boot.model.IcapResponse;
+import ru.vtb.vkod.platform2.icapintegration.exception.IcapConnectionException;
+import ru.vtb.vkod.platform2.icapintegration.exception.IcapException;
+import ru.vtb.vkod.platform2.icapintegration.exception.IcapProtocolException;
+import ru.vtb.vkod.platform2.icapintegration.model.IcapRequest;
+import ru.vtb.vkod.platform2.icapintegration.model.IcapResponse;
 
 /**
  * High-level entry point for talking to an ICAP server (RFC 3507).
