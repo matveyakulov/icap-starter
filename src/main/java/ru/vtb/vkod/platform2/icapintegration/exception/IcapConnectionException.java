@@ -1,4 +1,4 @@
-package io.github.icap.spring.boot.exception;
+package ru.vtb.vkod.platform2.icapintegration.exception;
 
 /**
  * Thrown when the client cannot establish or maintain the TCP connection to the ICAP server, or when an

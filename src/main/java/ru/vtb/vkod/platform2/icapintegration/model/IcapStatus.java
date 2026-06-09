@@ -1,4 +1,4 @@
-package io.github.icap.spring.boot.model;
+package ru.vtb.vkod.platform2.icapintegration.model;
 
 /**
  * ICAP status codes and their reason phrases (RFC 3507, section 4.3.3, which largely

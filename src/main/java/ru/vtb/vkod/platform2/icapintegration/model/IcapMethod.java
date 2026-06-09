@@ -1,4 +1,4 @@
-package io.github.icap.spring.boot.model;
+package ru.vtb.vkod.platform2.icapintegration.model;
 
 /**
  * The three request methods defined by the ICAP protocol (RFC 3507, section 4).

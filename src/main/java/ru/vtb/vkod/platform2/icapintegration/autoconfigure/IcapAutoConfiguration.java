@@ -1,7 +1,7 @@
-package io.github.icap.spring.boot.autoconfigure;
+package ru.vtb.vkod.platform2.icapintegration.autoconfigure;
 
-import io.github.icap.spring.boot.client.DefaultIcapClient;
-import io.github.icap.spring.boot.client.IcapClient;
+import ru.vtb.vkod.platform2.icapintegration.client.DefaultIcapClient;
+import ru.vtb.vkod.platform2.icapintegration.client.IcapClient;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

@@ -1,4 +1,4 @@
-package io.github.icap.spring.boot.exception;
+package ru.vtb.vkod.platform2.icapintegration.exception;
 
 /**
  * Base unchecked exception for all ICAP client failures.

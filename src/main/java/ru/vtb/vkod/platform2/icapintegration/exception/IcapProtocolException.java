@@ -1,4 +1,4 @@
-package io.github.icap.spring.boot.exception;
+package ru.vtb.vkod.platform2.icapintegration.exception;
 
 /**
  * Thrown when the server's reply cannot be parsed as a valid ICAP message: a malformed status line,
