@@ -19,7 +19,12 @@ import java.time.Duration;
  *   connect-timeout: 5s
  *   read-timeout: 30s
  *   allow-204: true
- *   tls: false
+ *   ssl:
+ *     enabled: false
+ *     key-store: classpath:client-keystore.p12
+ *     key-store-password: changeit
+ *     trust-store: classpath:truststore.p12
+ *     trust-store-password: changeit
  *   preview:
  *     enabled: true
  *     size: 4096
@@ -57,11 +62,37 @@ public class IcapProperties {
      */
     private boolean allow204 = true;
 
-    /** Whether to connect using TLS (ICAPS) instead of plain TCP. */
-    private boolean tls = false;
+    /** TLS settings: whether to use TLS and which Spring SSL bundle supplies the key/trust material. */
+    private final Ssl ssl = new Ssl();
 
     /** ICAP {@code Preview} settings. */
     private final Preview preview = new Preview();
+
+    /**
+     * TLS settings for connecting to the ICAP server (ICAPS).
+     *
+     * <p>Set {@link #enabled} to {@code true} to connect over TLS instead of plain TCP. TLS material is
+     * supplied via a Spring SSL bundle: set {@link #bundle} to the name of a bundle declared under
+     * {@code spring.ssl.bundle.*}. The bundle's key store provides the client certificate for mutual TLS
+     * (when the server requires client authentication); its trust store provides the CA certificate(s)
+     * used to verify the server (needed when the server's certificate is not anchored in the JVM default
+     * trust store, e.g. a private/internal CA).</p>
+     *
+     * <p>When TLS is enabled but no bundle is named, the JVM default SSL context is used.</p>
+     */
+    @Getter
+    @Setter
+    public static class Ssl {
+
+        /** Whether to connect using TLS (ICAPS) instead of plain TCP. */
+        private boolean enabled = false;
+
+        /**
+         * Name of a Spring SSL bundle ({@code spring.ssl.bundle.*}) supplying the key/trust material. When
+         * unset, the JVM default SSL context is used.
+         */
+        private String bundle;
+    }
 
     /**
      * Settings for the ICAP {@code Preview} mechanism, which lets the server make an early decision from

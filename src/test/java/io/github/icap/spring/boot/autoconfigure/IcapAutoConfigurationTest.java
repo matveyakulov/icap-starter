@@ -1,11 +1,22 @@
 package io.github.icap.spring.boot.autoconfigure;
 
+import io.github.icap.spring.boot.client.DefaultIcapClient;
 import io.github.icap.spring.boot.client.IcapClient;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.ssl.DefaultSslBundleRegistry;
+import org.springframework.boot.ssl.SslBundle;
+import org.springframework.boot.ssl.SslBundles;
+import org.springframework.boot.ssl.SslStoreBundle;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
+import java.security.KeyStore;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Verifies the Spring Boot auto-configuration contract: a single {@link IcapClient} is registered by
@@ -51,6 +62,47 @@ class IcapAutoConfigurationTest {
                     assertThat(context).hasSingleBean(IcapClient.class);
                     assertThat(context.getBean(IcapClient.class)).isInstanceOf(CustomClientConfig.NoopClient.class);
                 });
+    }
+
+    @Test
+    void usesNamedSslBundleForTls() throws Exception {
+        SslBundles bundles = new DefaultSslBundleRegistry("icap", emptyTrustOnlyBundle());
+
+        IcapProperties properties = new IcapProperties();
+        properties.getSsl().setEnabled(true);
+        properties.getSsl().setBundle("icap");
+
+        IcapClient client = new IcapAutoConfiguration().icapClient(properties, providerOf(bundles));
+
+        // No exception means the bundle's SSL context was resolved and handed to the client.
+        assertThat(client).isInstanceOf(DefaultIcapClient.class);
+    }
+
+    @Test
+    void failsFastWhenNamedSslBundleIsMissing() {
+        SslBundles bundles = new DefaultSslBundleRegistry(); // no bundles registered
+
+        IcapProperties properties = new IcapProperties();
+        properties.getSsl().setEnabled(true);
+        properties.getSsl().setBundle("nope");
+
+        assertThatThrownBy(() -> new IcapAutoConfiguration().icapClient(properties, providerOf(bundles)))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("nope");
+    }
+
+    /** An SSL bundle backed by an empty in-memory PKCS#12 trust store (enough to build an SSL context). */
+    private static SslBundle emptyTrustOnlyBundle() throws Exception {
+        KeyStore trustStore = KeyStore.getInstance("PKCS12");
+        trustStore.load(null, null);
+        return SslBundle.of(SslStoreBundle.of(null, null, trustStore));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static ObjectProvider<SslBundles> providerOf(SslBundles bundles) {
+        ObjectProvider<SslBundles> provider = mock(ObjectProvider.class);
+        when(provider.getIfAvailable()).thenReturn(bundles);
+        return provider;
     }
 
     /** A user-supplied client bean that should take precedence over the auto-configured one. */

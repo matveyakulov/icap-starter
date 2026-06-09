@@ -30,10 +30,15 @@
       "defaultValue": true
     },
     {
-      "name": "icap.tls",
+      "name": "icap.ssl.enabled",
       "type": "java.lang.Boolean",
       "description": "Connect using TLS (ICAPS) instead of plain TCP.",
       "defaultValue": false
+    },
+    {
+      "name": "icap.ssl.bundle",
+      "type": "java.lang.String",
+      "description": "Name of a Spring SSL bundle (spring.ssl.bundle.*) supplying the key/trust material for TLS. When unset, the JVM default SSL context is used."
     },
     {
       "name": "icap.preview.enabled",

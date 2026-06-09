@@ -78,7 +78,9 @@ icap:
   connect-timeout: 5s      # таймаут TCP-подключения (0 = бесконечно)
   read-timeout: 30s        # таймаут чтения из сокета (0 = бесконечно)
   allow-204: true          # разрешить серверу отвечать "204 No Content", если изменений нет
-  tls: false               # true — использовать TLS (ICAPS)
+  ssl:
+    enabled: false         # true — использовать TLS (ICAPS); если bundle не задан, берётся SSL-контекст JVM по умолчанию
+    bundle: icap           # имя Spring SSL bundle (spring.ssl.bundle.*) с key/trust материалом
   preview:
     enabled: true          # использовать механизм Preview при наличии тела
     size: 4096             # сколько начальных байт тела отправлять в превью
@@ -93,9 +95,52 @@ icap:
 | `icap.connect-timeout` | `5s` | Таймаут TCP-подключения. |
 | `icap.read-timeout` | `30s` | Таймаут чтения из сокета. |
 | `icap.allow-204` | `true` | Объявлять `Allow: 204`. |
-| `icap.tls` | `false` | Использовать TLS (ICAPS). |
+| `icap.ssl.enabled` | `false` | Использовать TLS (ICAPS). |
+| `icap.ssl.bundle` | — | Имя Spring SSL bundle (`spring.ssl.bundle.*`) с key/trust материалом. Если не задан — SSL-контекст JVM по умолчанию. |
 | `icap.preview.enabled` | `true` | Использовать механизм `Preview`. |
 | `icap.preview.size` | `4096` | Размер превью в байтах. |
+
+> **TLS / mutual TLS.** TLS включается флагом `icap.ssl.enabled: true`. Материал TLS
+> описывается стандартным Spring SSL bundle под `spring.ssl.bundle.*`, на который
+> ссылается `icap.ssl.bundle` (переиспользуется механизм Spring Boot, включая
+> горячую перезагрузку бандлов):
+>
+> ```yaml
+> spring:
+>   ssl:
+>     bundle:
+>       jks:
+>         icap:
+>           key:
+>             alias: client
+>           keystore:                       # клиентский сертификат — только для mutual TLS
+>             location: classpath:client-keystore.p12
+>             password: changeit
+>             type: PKCS12
+>           truststore:                     # CA-сертификаты для проверки сервера
+>             location: classpath:truststore.p12
+>             password: changeit
+>             type: PKCS12
+> icap:
+>   ssl:
+>     enabled: true
+>     bundle: icap
+> ```
+>
+> `truststore` нужен, если сервер предъявляет сертификат, выпущенный приватным
+> (внутренним) центром сертификации; `keystore` — если сервер требует клиентский
+> сертификат (mutual TLS). Если `icap.ssl.bundle` не задан, используется SSL-контекст
+> JVM по умолчанию. Сгенерировать пару хранилищ можно через `keytool`:
+>
+> ```bash
+> # клиентский ключ + самоподписанный сертификат
+> keytool -genkeypair -alias client -keyalg RSA -keysize 2048 \
+>         -dname CN=icap-client -validity 3650 \
+>         -keystore client-keystore.p12 -storetype PKCS12 -storepass changeit
+> # доверенное хранилище с CA-сертификатом сервера
+> keytool -importcert -alias server-ca -file server-ca.cer \
+>         -keystore truststore.p12 -storetype PKCS12 -storepass changeit -noprompt
+> ```
 
 > Правильное имя `service` полностью зависит от вашего ICAP-продукта. Частые
 > значения: `avscan`, `respmod`, `srv_clamav`, `virus_scan`. Если не знаете —

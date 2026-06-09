@@ -64,9 +64,10 @@ public class DefaultIcapClient implements IcapClient {
     private final int previewSize;
     private final boolean allow204;
     private final boolean tls;
+    private final SSLSocketFactory sslSocketFactory;
 
     /**
-     * Creates a configured client.
+     * Creates a configured client that, when TLS is enabled, uses the JVM default SSL context.
      *
      * @param host             ICAP server host
      * @param port             ICAP server port (default ICAP port is 1344)
@@ -82,6 +83,29 @@ public class DefaultIcapClient implements IcapClient {
                              int connectTimeoutMs, int readTimeoutMs,
                              boolean previewEnabled, int previewSize,
                              boolean allow204, boolean tls) {
+        this(host, port, defaultService, connectTimeoutMs, readTimeoutMs,
+                previewEnabled, previewSize, allow204, tls, null);
+    }
+
+    /**
+     * Creates a configured client.
+     *
+     * @param host             ICAP server host
+     * @param port             ICAP server port (default ICAP port is 1344)
+     * @param defaultService   service path/name used when a request does not specify one
+     * @param connectTimeoutMs TCP connect timeout in milliseconds (0 = infinite)
+     * @param readTimeoutMs    socket read timeout in milliseconds (0 = infinite)
+     * @param previewEnabled   whether to use the ICAP {@code Preview} mechanism
+     * @param previewSize      number of body bytes to send as a preview
+     * @param allow204         whether to advertise {@code Allow: 204} (let the server skip returning a body)
+     * @param tls              whether to connect using TLS (ICAPS)
+     * @param sslSocketFactory factory used to create TLS sockets; when {@code null} and {@code tls} is
+     *                         enabled, the JVM default ({@link SSLSocketFactory#getDefault()}) is used
+     */
+    public DefaultIcapClient(String host, int port, String defaultService,
+                             int connectTimeoutMs, int readTimeoutMs,
+                             boolean previewEnabled, int previewSize,
+                             boolean allow204, boolean tls, SSLSocketFactory sslSocketFactory) {
         this.host = host;
         this.port = port;
         this.defaultService = defaultService;
@@ -91,6 +115,7 @@ public class DefaultIcapClient implements IcapClient {
         this.previewSize = previewSize;
         this.allow204 = allow204;
         this.tls = tls;
+        this.sslSocketFactory = sslSocketFactory;
     }
 
     // ---------------------------------------------------------------------
@@ -166,7 +191,7 @@ public class DefaultIcapClient implements IcapClient {
     }
 
     private Socket openSocket() throws IOException {
-        Socket socket = tls ? SSLSocketFactory.getDefault().createSocket() : new Socket();
+        Socket socket = tls ? tlsSocketFactory().createSocket() : new Socket();
         try {
             socket.connect(new InetSocketAddress(host, port), connectTimeoutMs);
             socket.setSoTimeout(readTimeoutMs);
@@ -176,6 +201,11 @@ public class DefaultIcapClient implements IcapClient {
             throw new IcapConnectionException(
                     "Unable to connect to ICAP server " + host + ":" + port, e);
         }
+    }
+
+    /** Returns the configured TLS socket factory, falling back to the JVM default when none was supplied. */
+    private SSLSocketFactory tlsSocketFactory() {
+        return (sslSocketFactory != null) ? sslSocketFactory : (SSLSocketFactory) SSLSocketFactory.getDefault();
     }
 
     private IcapResponse sendAndReceive(IcapRequest request, String service,
