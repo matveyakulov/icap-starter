@@ -1,0 +1,51 @@
+{
+  "properties": [
+    {
+      "name": "icap.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether the ICAP client auto-configuration is enabled.",
+      "defaultValue": true
+    },
+    {
+      "name": "icap.host",
+      "type": "java.lang.String",
+      "description": "Hostname or IP address of the ICAP server.",
+      "defaultValue": "localhost"
+    },
+    {
+      "name": "icap.port",
+      "type": "java.lang.Integer",
+      "description": "TCP port of the ICAP server (IANA default is 1344).",
+      "defaultValue": 1344
+    },
+    {
+      "name": "icap.service",
+      "type": "java.lang.String",
+      "description": "Default ICAP service path/name to target (e.g. 'avscan')."
+    },
+    {
+      "name": "icap.allow-204",
+      "type": "java.lang.Boolean",
+      "description": "Advertise 'Allow: 204' so the server may answer '204 No Content' when no modification is needed.",
+      "defaultValue": true
+    },
+    {
+      "name": "icap.tls",
+      "type": "java.lang.Boolean",
+      "description": "Connect using TLS (ICAPS) instead of plain TCP.",
+      "defaultValue": false
+    },
+    {
+      "name": "icap.preview.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Use the ICAP Preview mechanism when a body is present.",
+      "defaultValue": true
+    },
+    {
+      "name": "icap.preview.size",
+      "type": "java.lang.Integer",
+      "description": "Number of leading body bytes to send as the preview.",
+      "defaultValue": 4096
+    }
+  ]
+}

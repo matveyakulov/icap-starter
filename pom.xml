@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.icap</groupId>
+    <artifactId>icap-spring-boot-starter</artifactId>
+    <version>0.1.0</version>
+    <packaging>jar</packaging>
+
+    <name>ICAP Spring Boot Starter</name>
+    <description>
+        Spring Boot starter providing a ready-to-use client for the Internet Content
+        Adaptation Protocol (ICAP) as defined by RFC 3507. Typically used to talk to
+        content-adaptation servers such as antivirus/DLP gateways (Symantec, McAfee,
+        Kaspersky, c-icap/ClamAV, etc.).
+    </description>
+
+    <properties>
+        <!--
+            Spring Boot 3.5.x requires Java 17 as the baseline. We compile against the
+            release flag so the produced bytecode is portable to any JDK 17+.
+        -->
+        <java.version>17</java.version>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Pin the Spring Boot line this starter is built and tested against. -->
+        <spring-boot.version>3.5.14</spring-boot.version>
+    </properties>
+
+    <!--
+        We import the Spring Boot BOM instead of inheriting from
+        `spring-boot-starter-parent`. For a library/starter this is the recommended
+        approach: it gives us managed, consistent dependency versions without forcing
+        the parent's build plugins/conventions onto consumers.
+    -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!--
+            Brings in spring-context + spring-boot and the auto-configuration machinery
+            (@AutoConfiguration, @ConditionalOnX, @ConfigurationProperties binding).
+            This is all the runtime Spring dependency a starter needs.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+
+        <!--
+            Generates META-INF/spring-configuration-metadata.json from our
+            @ConfigurationProperties class so IDEs offer auto-completion and docs for
+            the `icap.*` keys. Marked optional so it never leaks onto consumers.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!--
+            Lombok removes getter/setter/constructor/builder boilerplate. It is a
+            compile-time-only annotation processor: `provided` scope keeps it off the
+            runtime classpath and `optional` stops it leaking transitively to consumers.
+        -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- ===== test scope ===== -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
