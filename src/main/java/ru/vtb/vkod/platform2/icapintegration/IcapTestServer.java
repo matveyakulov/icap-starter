@@ -1,8 +1,5 @@
 package ru.vtb.vkod.platform2.icapintegration;
 
-import io.github.icap.spring.boot.model.IcapHeaders;
-import io.github.icap.spring.boot.model.IcapStatus;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -20,9 +17,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * A small, dependency-free ICAP/1.0 (RFC 3507) <strong>server</strong> intended for use on a test stand:
- * point {@link io.github.icap.spring.boot.client.DefaultIcapClient DefaultIcapClient} (or any ICAP client,
- * e.g. a Squid proxy) at it and exercise the full request/response flow without needing a real
- * antivirus/DLP appliance.
+ * point any ICAP client (e.g. the bundled {@code DefaultIcapClient}, or a Squid proxy) at it and exercise
+ * the full request/response flow without needing a real antivirus/DLP appliance.
  *
  * <p>ICAP is <em>not</em> HTTP, so this is deliberately a raw TCP listener rather than a Spring MVC
  * controller. It speaks the same wire format the bundled client produces, in reverse:</p>
