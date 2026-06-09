@@ -22,9 +22,9 @@
 ```bash
 mvn -o compile
 # порт по умолчанию 1344:
-java -cp target/classes io.github.icap.spring.boot.server.IcapTestServer
+java -cp target/classes ru.vtb.vkod.platform2.icapintegration.IcapTestServer
 # или выбрать порт:
-java -cp target/classes io.github.icap.spring.boot.server.IcapTestServer 13440
+java -cp target/classes ru.vtb.vkod.platform2.icapintegration.IcapTestServer 13440
 ```
 
 Быстрая проверка встроенным клиентом (направьте его на запущенный сервер):
@@ -37,12 +37,13 @@ icap.default-service=test
 
 ## Встраивание в Spring Boot приложение
 
-Сервер целиком находится в пакете `server` и **не** затрагивает публикуемый клиентский стартер
-(он не зарегистрирован в `AutoConfiguration.imports`). Подключается явно — импортом
-`IcapTestServerConfiguration` в вашем стендовом приложении, после чего включается через свойства:
+Сервер целиком находится в пакете `ru.vtb.vkod.platform2.icapintegration` и **не** затрагивает
+публикуемый клиентский стартер (он не зарегистрирован в `AutoConfiguration.imports`). Подключается
+явно — импортом `IcapTestServerConfiguration` в вашем стендовом приложении, после чего включается
+через свойства:
 
 ```java
-@Import(io.github.icap.spring.boot.server.IcapTestServerConfiguration.class)
+@Import(ru.vtb.vkod.platform2.icapintegration.IcapTestServerConfiguration.class)
 @SpringBootApplication
 public class StandApplication { }
 ```

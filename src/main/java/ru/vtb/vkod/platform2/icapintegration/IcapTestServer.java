@@ -1,4 +1,4 @@
-package io.github.icap.spring.boot.server;
+package ru.vtb.vkod.platform2.icapintegration;
 
 import io.github.icap.spring.boot.model.IcapHeaders;
 import io.github.icap.spring.boot.model.IcapStatus;
@@ -44,9 +44,9 @@ import java.util.concurrent.atomic.AtomicLong;
  * <h2>Running it</h2>
  * <pre>{@code
  * // standalone (default port 1344):
- * java -cp target/classes io.github.icap.spring.boot.server.IcapTestServer
+ * java -cp target/classes ru.vtb.vkod.platform2.icapintegration.IcapTestServer
  * // or pick a port:
- * java -cp target/classes io.github.icap.spring.boot.server.IcapTestServer 13440
+ * java -cp target/classes ru.vtb.vkod.platform2.icapintegration.IcapTestServer 13440
  * }</pre>
  *
  * <p>Or embed it (e.g. in an integration test):</p>

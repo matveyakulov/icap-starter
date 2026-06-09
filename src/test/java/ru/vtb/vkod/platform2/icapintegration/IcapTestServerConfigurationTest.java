@@ -1,4 +1,4 @@
-package io.github.icap.spring.boot.server;
+package ru.vtb.vkod.platform2.icapintegration;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
