@@ -1,6 +1,6 @@
-package io.github.icap.spring.boot.client;
+package ru.vtb.vkod.platform2.icapintegration.client;
 
-import io.github.icap.spring.boot.model.IcapResponse;
+import ru.vtb.vkod.platform2.icapintegration.model.IcapResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,6 @@
-package io.github.icap.spring.boot.autoconfigure;
+package ru.vtb.vkod.platform2.icapintegration.autoconfigure;
 
-import io.github.icap.spring.boot.client.IcapClient;
+import ru.vtb.vkod.platform2.icapintegration.client.IcapClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -61,19 +61,19 @@ class IcapAutoConfigurationTest {
         }
 
         static class NoopClient implements IcapClient {
-            public io.github.icap.spring.boot.model.IcapResponse options(String service) {
+            public ru.vtb.vkod.platform2.icapintegration.model.IcapResponse options(String service) {
                 return null;
             }
 
-            public io.github.icap.spring.boot.model.IcapResponse reqmod(io.github.icap.spring.boot.model.IcapRequest request) {
+            public ru.vtb.vkod.platform2.icapintegration.model.IcapResponse reqmod(ru.vtb.vkod.platform2.icapintegration.model.IcapRequest request) {
                 return null;
             }
 
-            public io.github.icap.spring.boot.model.IcapResponse respmod(io.github.icap.spring.boot.model.IcapRequest request) {
+            public ru.vtb.vkod.platform2.icapintegration.model.IcapResponse respmod(ru.vtb.vkod.platform2.icapintegration.model.IcapRequest request) {
                 return null;
             }
 
-            public io.github.icap.spring.boot.model.IcapResponse scan(byte[] content, String filename) {
+            public ru.vtb.vkod.platform2.icapintegration.model.IcapResponse scan(byte[] content, String filename) {
                 return null;
             }
         }

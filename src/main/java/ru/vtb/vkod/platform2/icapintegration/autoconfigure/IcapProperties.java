@@ -1,4 +1,4 @@
-package io.github.icap.spring.boot.autoconfigure;
+package ru.vtb.vkod.platform2.icapintegration.autoconfigure;
 
 import lombok.Getter;
 import lombok.Setter;
